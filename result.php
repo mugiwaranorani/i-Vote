@@ -9,8 +9,6 @@
       text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
     }
   </style>
- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="update.js"></script>
 </head>
 <body>
 
@@ -61,7 +59,7 @@
   </div>
 </nav>
 
-<div class="full-main" id="result-content">
+<div class="full-main">
 
 <div class="container-fluid x">
   <?php include "../schoolLogo.php"?>
@@ -71,12 +69,13 @@
   
 <hr>
 
-  <?php include '../time.php'?>
+<?php include '../time.php'?>
 
-  <?php include 'modalChangepass.php'?>
-  <?php include 'modalEmailVerification.php'?>
+<?php include 'modalChangepass.php'?>
+<?php include 'modalEmailVerification.php'?>
+<?php include 'modalLogoutConfirmation.php'?>
 
-  <div class="container">
+<div class="container">
     <?php			
       include ('../dbconn.php');
       $sql = "SELECT * FROM clg_title WHERE titlePage='Result'";
@@ -94,7 +93,7 @@
       $conn->close();
       }
     ?>
-  </div>
+</div>
 
       <div class="container">
         <div class="nav nav-pills d-flex flex-column flex-xxl-row overflow-auto" role="tablist" style="height:51px;">
@@ -218,7 +217,7 @@
                           <strong>
                             <b>
                             <?php echo $row['position']?>
-                              <br>VOTES [<?php echo $row['voteCount']?>]<?php echo $star_icon; ?>
+                              <br>VOTES [<span id="candidate-votes"><?php echo $row['voteCount']?>]<?php echo $star_icon; ?></span>
                             </b>
                           </strong>
                         </h3>
@@ -242,6 +241,33 @@
                   </button>
                 </div>
               </div>
+
+              <script>
+                function updateVoteCounts() {
+                  // Create a new XMLHttpRequest object
+                  var xhr = new XMLHttpRequest();
+
+                  // Set the URL of the PHP script that updates the vote counts
+                  var url = "result.php";
+
+                  // Set the HTTP method to POST
+                  xhr.open("POST", url, true);
+
+                  // Set the content type of the request to "application/x-www-form-urlencoded"
+                  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+                  // Set the callback function that will be called when the response is received
+                  xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                      // Update the vote count elements with the new values
+                      document.getElementById("candidate-votes").innerHTML = xhr.responseText.candidate_votes;
+                    }
+                  };
+
+                  // Send the AJAX request with the candidate IDs as parameters
+                  xhr.send("candidate1_id=<?php echo $candidate1_id; ?>&candidate2_id=<?php echo $candidate2_id; ?>");
+                }
+                </script>
             
             </div>
           </div>  
@@ -524,6 +550,7 @@
         <!--TABLE CONTENT END-->
 
       </div>
+        
         
   
   </div>      
