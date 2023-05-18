@@ -9,6 +9,7 @@
       text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
     }
   </style>
+  <script src="update.js"></script>
 </head>
 <body>
 
@@ -59,7 +60,7 @@
   </div>
 </nav>
 
-<div class="full-main">
+<div class="full-main" id="result-content">
 
 <div class="container-fluid x">
   <?php include "../schoolLogo.php"?>
@@ -69,12 +70,12 @@
   
 <hr>
 
-<?php include '../time.php'?>
+  <?php include '../time.php'?>
 
-<?php include 'modalChangepass.php'?>
-<?php include 'modalEmailVerification.php'?>
+  <?php include 'modalChangepass.php'?>
+  <?php include 'modalEmailVerification.php'?>
 
-<div class="container">
+  <div class="container">
     <?php			
       include ('../dbconn.php');
       $sql = "SELECT * FROM clg_title WHERE titlePage='Result'";
@@ -92,7 +93,7 @@
       $conn->close();
       }
     ?>
-</div>
+  </div>
 
       <div class="container">
         <div class="nav nav-pills d-flex flex-column flex-xxl-row overflow-auto" role="tablist" style="height:51px;">
@@ -168,11 +169,11 @@
                     ?>
                   </div>
 
-                  <button class="carousel-control-prev d-none-sm" type="button" data-bs-target="#partylistb" data-bs-slide="prev">
+                  <button class="carousel-control-prev d-none-sm" type="button" data-bs-target="#partylista" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
                   </button>
-                  <button class="carousel-control-next d-none-sm" type="button" data-bs-target="#partylistb" data-bs-slide="next">
+                  <button class="carousel-control-next d-none-sm" type="button" data-bs-target="#partylista" data-bs-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
                   </button>
@@ -523,7 +524,7 @@
 
       </div>
         
-        
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   
   </div>      
 </div>
