@@ -9,6 +9,7 @@
       text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
     }
   </style>
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="update.js"></script>
 </head>
 <body>
@@ -524,7 +525,6 @@
 
       </div>
         
-      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   
   </div>      
 </div>
