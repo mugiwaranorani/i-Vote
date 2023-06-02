@@ -1,5 +1,5 @@
-<?php include 'header.php'?>
-<?php include 'collegeSession.php'?>
+<?php include 'header.php'; ?>
+<?php include 'collegeSession.php'; ?>
   <title>Vote</title>
   <link rel="icon" type="image/x-icon" href="ACLCLOGO/logo3.jpeg">
   <style>
@@ -59,15 +59,15 @@
 <div class="full-main">
 
   <div class="container-fluid x">
-    <?php include "../schoolLogo.php"?>
+    <?php include "../schoolLogo.php"; ?>
   </div>
     <hr>
 
-    <?php include '../time.php'?>
+    <?php include '../time.php'; ?>
 
-    <?php include 'modalChangepass.php'?>
-    <?php include 'modalEmailVerification.php'?>
-    <?php include 'modalLogoutConfirmation.php'?>
+    <?php include 'modalChangepass.php'; ?>
+    <?php include 'modalEmailVerification.php'; ?>
+    <?php include 'modalLogoutConfirmation.php'; ?>
 
   <div class="container">
     <?php			
@@ -561,13 +561,11 @@
       
      <!--LEFT COLUMN END-->
 
-    
-
-     
+    <?php
+      }
+    ?>
+  
     </div>
-  <?php
-    }
-  ?>
   
 </div>
 
