@@ -1,4 +1,5 @@
 <?php include 'header.php'?>
+<?php include 'collegeSession.php'?>
   <title>Vote</title>
   <link rel="icon" type="image/x-icon" href="ACLCLOGO/logo3.jpeg">
   <style>
@@ -18,7 +19,7 @@
     <ul class="nav nav-pills nav-justified w-100 p-2" style="font-size: 17px;">
 
       <li class="nav-item">
-        <?php include '../nav-logo.php'?>
+        <a class="nav-link" href="home.php" data-toggle="tooltip" data-placement="bottom" title="Home"><i class="fas fa-home" style="font-size:24px"></i><span class="d-none d-sm-inline"> Home</span></a>
       </li>
 
       <li class="nav-item">
@@ -38,7 +39,7 @@
         <ul class="dropdown-menu dropdown-menu-dark">
           <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#changePasswordModal"><i class='fas fa-user-lock'></i> Change Password</a></li><br>
           <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#emailVerificationModal"><i class='fas fa-user-shield'></i> Verify Email</a></li><br>
-          <li><a class="dropdown-item" href="#"><i class='fas fa-power-off'></i> Log Out</a></li>
+          <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#logoutModal"><i class='fas fa-power-off'></i> Log Out</a></li>
         </ul>
       </li>
 
@@ -49,10 +50,6 @@
         $('.dropdown-toggle').dropdown()
       });
       </script>
-
-      <!--<li class="nav-item">
-        <a class="nav-link" href="login.php">Login(temporary)</a>
-      </li>-->
 
     </ul>
 
@@ -70,6 +67,7 @@
 
     <?php include 'modalChangepass.php'?>
     <?php include 'modalEmailVerification.php'?>
+    <?php include 'modalLogoutConfirmation.php'?>
 
   <div class="container">
     <?php			
@@ -92,7 +90,19 @@
   
   <br>
   
-  
+    <?php
+    include '../dbconn.php';
+    $voterID = $_SESSION['voterID'];    
+    $sql = "SELECT voterName FROM clg_pendingvote WHERE voterID = $voterID";
+    $result = $conn->query($sql);
+    $count=$result->num_rows;
+
+    if ($result->num_rows > 0) {
+      
+      header("location:vote-pending-to-confirm.php");
+
+    }else{
+    ?>
     <!--CANDIDATE SELECTION START-->
     <div class="container p-2">
 
@@ -113,7 +123,7 @@
 
       </div>
 
-      <hr>
+      <hr style="margin-top: -1px;">
         <!--FILTER END-->
     
       <div class="container overflow-auto rounded" style="height: 550px;" >
@@ -123,9 +133,12 @@
           <div class="tab-content">
             <!--POSITION CONTENT START-->
             <div id="positions" class="tab-pane fade show active"><br>
+              
                 <!--POSITION PRESIDENT START-->
                 <h5><i>ASPIRING PRESIDENT(S)</i></h5>
-                <form action="vote-pending-to-confirm.php" method="post">
+                <form action="vote-pending-process.php" method="post"  enctype="multipart/form-data">
+                <input type="hidden" name="vname" value="<?php echo $user->get_fullname($voterID);?>">
+                <input type="hidden" name="vid" value="<?php echo $user->get_voterid($voterID);?>">
                   <div class="con">
                       
                       <?php include '../dbconn.php';
@@ -137,9 +150,9 @@
                       ?>
                       
                         <div class="box">
-                          <img src="picture/<?php echo $row['picture']?>" alt="sc candidate" width="96" height="96">
+                          <img src="../uploads/<?php echo $row['picture']?>" alt="sc candidate" width="96" height="96">
                           <div class="box-info">
-                            <strong><b class="fs-5"><?php echo $row['position']?> <input type="radio" id="president" name="president" value="<?php echo $row['name']?>"></b></strong>
+                            <strong><b class="fs-5"><?php echo $row['position']?> <input type="radio" id="president" name="president" value="<?php echo $row['candidateID']?>" required></b></strong>
                             <br>
                             <b>Name: </b> <?php echo $row['name']?>
                           </div>
@@ -166,9 +179,9 @@
                     ?>
                     
                     <div class="box">
-                      <img src="picture/<?php echo $row['picture']?>" alt="sc candidate" width="96" height="96">
+                      <img src="../uploads/<?php echo $row['picture']?>" alt="sc candidate" width="96" height="96">
                       <div class="box-info">
-                        <strong><b class="fs-5"><?php echo $row['position']?> <input type="radio" id="vpresident" name="vpresident" value=""></b></strong>
+                        <strong><b class="fs-5"><?php echo $row['position']?> <input type="radio" id="vpresident" name="vpresident" value="<?php echo $row['candidateID']?>" required></b></strong>
                         <br>
                         <b>Name: </b> <?php echo $row['name']?>
                       </div>
@@ -194,9 +207,9 @@
                     ?>
                     
                     <div class="box">
-                      <img src="picture/<?php echo $row['picture']?>" alt="sc candidate" width="96" height="96">
+                      <img src="../uploads/<?php echo $row['picture']?>" alt="sc candidate" width="96" height="96">
                       <div class="box-info">
-                        <strong><b class="fs-5"><?php echo $row['position']?> <input type="radio" id="secretary" name="secretary" value=""></b></strong>
+                        <strong><b class="fs-5"><?php echo $row['position']?> <input type="radio" id="secretary" name="secretary" value="<?php echo $row['candidateID']?>" required></b></strong>
                         <br>
                         <b>Name: </b> <?php echo $row['name']?>
                       </div>
@@ -222,9 +235,9 @@
                     ?>
                     
                     <div class="box">
-                      <img src="picture/<?php echo $row['picture']?>" alt="sc candidate" width="96" height="96">
+                      <img src="../uploads/<?php echo $row['picture']?>" alt="sc candidate" width="96" height="96">
                       <div class="box-info">
-                        <strong><b class="fs-5"><?php echo $row['position']?> <input type="radio" id="treasurer" name="treasurer" value=""></b></strong>
+                        <strong><b class="fs-5"><?php echo $row['position']?> <input type="radio" id="treasurer" name="treasurer" value="<?php echo $row['candidateID']?>" required></b></strong>
                         <br>
                         <b>Name: </b> <?php echo $row['name']?>
                       </div>
@@ -251,9 +264,9 @@
                     ?>
                     
                     <div class="box">
-                      <img src="picture/<?php echo $row['picture']?>" alt="sc candidate" width="96" height="96">
+                      <img src="../uploads/<?php echo $row['picture']?>" alt="sc candidate" width="96" height="96">
                       <div class="box-info">
-                        <strong><b class="fs-5"><?php echo $row['position']?> <input type="radio" id="grade11" name="grade11" value=""></b></strong>
+                        <strong><b class="fs-5"><?php echo $row['position']?> <input type="radio" id="collegerep" name="collegerep" value="<?php echo $row['candidateID']?>" required></b></strong>
                         <br>
                         <b>Name: </b> <?php echo $row['name']?>
                       </div>
@@ -268,8 +281,8 @@
               
                 <div class="container p-2 text-center">
                   <br>
-                  <input class="btn btn-success px-4" id="btnSubmit" name="voteSubmitBtn" type="submit" value="Submit">
-                  <a class="btn btn-danger px-4" href="vote.php">Cancel</a>
+                  <input class="btn btn-success px-4" id="voteBtnMain" name="voteBtnMain" type="submit" value="Submit">
+                  <a class="btn btn-danger px-3" href="vote.php">Reset Vote</a>
                 </div>
                 </form>
                 <br>
@@ -280,76 +293,263 @@
 
               <!--PARTY LIST A CONTENT START-->
               <div id="plA" class="container tab-pane fade"><br>
+
                 <h5><i>PARTY LIST A</i></h5>
-                <div class="con">
+                <form action="vote-pending-process.php" method="post"  enctype="multipart/form-data">
+                <input type="hidden" name="vname" value="<?php echo $user->get_fullname($voterID);?>">
+                <input type="hidden" name="vid" value="<?php echo $user->get_voterid($voterID);?>">
                   
-                    <?php include '../dbconn.php';
-                      $sql = "SELECT * FROM clg_candidates WHERE partyList ='PARTY LIST A'";
-                      $result = $conn->query($sql);
-                              
-                      if ($result->num_rows > 0) {
-                        while($row = $result->fetch_array()) {
-                    ?>
-                    
-                    <div class="box mb-4">
-                      <img src="picture/<?php echo $row['picture']?>" alt="sc candidate" width="96" height="96">
-                      <div class="box-info">
-                        <strong><b class="fs-5"><?php echo $row['position']?> <input type="radio" id="partyListA" name="partylistA" value=""></b></strong>
-                        <br>
-                        <b>Name: </b> <?php echo $row['name']?>
+                    <div class="con">
+                      <?php include '../dbconn.php';
+                        $sql = "SELECT * FROM clg_candidates WHERE partyList ='PARTY LIST A' AND position ='PRESIDENT'";
+                        $result = $conn->query($sql);
+                                
+                        if ($result->num_rows > 0) {
+                          while($row = $result->fetch_array()) {
+                      ?>
+                      
+                      <div class="box mb-4">
+                        <img src="../uploads/<?php echo $row['picture']?>" alt="sc candidate" width="96" height="96">
+                        <div class="box-info">
+                          <strong><b class="fs-5"><?php echo $row['position']?> <input type="radio" id="presidentA" name="presidentA" value="<?php echo $row['candidateID']?>" checked></b></strong>
+                          <br>
+                          <b>Name: </b> <?php echo $row['name']?>
+                        </div>
                       </div>
-                    </div>
-                    <?php	
-                      }		
-                        $conn->close();
-                      }
-                    ?> 
-
-                    <div class="container p-2 text-center">
-                      <br>
-                      <a class="btn btn-success px-3" href="vote-pending-to-confirm.php">Vote All</a>
-                      <a class="btn btn-danger px-4" href="vote.php">Cancel</a>
-                    </div>
-                    <br>
-                </div>
-              </div>
-              <!--PARTY LIST A CONTENT START-->
-
-              <!--PARTY LIST B CONTENT START-->
-              <div id="plB" class="container tab-pane fade"><br>
-                <h5><i>PARTY LIST B</i></h5>
-                <div class="con">
-                  
-                    <?php include '../dbconn.php';
-                      $sql = "SELECT * FROM clg_candidates WHERE partyList ='PARTY LIST B'";
-                      $result = $conn->query($sql);
-                              
-                      if ($result->num_rows > 0) {
-                        while($row = $result->fetch_array()) {
-                    ?>
-                    
-                    <div class="box mb-4">
-                      <img src="picture/<?php echo $row['picture']?>" alt="sc candidate" width="96" height="96">
-                      <div class="box-info">
-                        <strong><b class="fs-5"><?php echo $row['position']?> <input type="radio" id="partylistB" name="partylistB" value=""></b></strong>
-                        <br>
-                        <b>Name: </b> <?php echo $row['name']?>
-                      </div>
-                    </div>
                       <?php	
                         }		
                           $conn->close();
                         }
                       ?> 
 
-                    <div class="container p-2 text-center">
-                      <br>
-                      <a class="btn btn-success px-3" href="vote-pending-to-confirm.php">Vote All</a>
-                      <a class="btn btn-danger px-4" href="vote.php">Cancel</a>
-                    </div>
+                      <?php include '../dbconn.php';
+                        $sql = "SELECT * FROM clg_candidates WHERE partyList ='PARTY LIST A' AND position ='VICE PRESIDENT'";
+                        $result = $conn->query($sql);
+                                
+                        if ($result->num_rows > 0) {
+                          while($row = $result->fetch_array()) {
+                      ?>
+                      
+                      <div class="box mb-4">
+                        <img src="../uploads/<?php echo $row['picture']?>" alt="sc candidate" width="96" height="96">
+                        <div class="box-info">
+                          <strong><b class="fs-5"><?php echo $row['position']?> <input type="radio" id="vpresidentA" name="vpresidentA" value="<?php echo $row['candidateID']?>" checked></b></strong>
+                          <br>
+                          <b>Name: </b> <?php echo $row['name']?>
+                        </div>
+                      </div>
+                      <?php	
+                        }		
+                          $conn->close();
+                        }
+                      ?> 
+
+                      <?php include '../dbconn.php';
+                        $sql = "SELECT * FROM clg_candidates WHERE partyList ='PARTY LIST A' AND position ='SECRETARY'";
+                        $result = $conn->query($sql);
+                                
+                        if ($result->num_rows > 0) {
+                          while($row = $result->fetch_array()) {
+                      ?>
+                      
+                      <div class="box mb-4">
+                        <img src="../uploads/<?php echo $row['picture']?>" alt="sc candidate" width="96" height="96">
+                        <div class="box-info">
+                          <strong><b class="fs-5"><?php echo $row['position']?> <input type="radio" id="secretaryA" name="secretaryA" value="<?php echo $row['candidateID']?>" checked></b></strong>
+                          <br>
+                          <b>Name: </b> <?php echo $row['name']?>
+                        </div>
+                      </div>
+                      <?php	
+                        }		
+                          $conn->close();
+                        }
+                      ?> 
+
+                      <?php include '../dbconn.php';
+                        $sql = "SELECT * FROM clg_candidates WHERE partyList ='PARTY LIST A' AND position ='TREASURER'";
+                        $result = $conn->query($sql);
+                                
+                        if ($result->num_rows > 0) {
+                          while($row = $result->fetch_array()) {
+                      ?>
+                      
+                      <div class="box mb-4">
+                        <img src="../uploads/<?php echo $row['picture']?>" alt="sc candidate" width="96" height="96">
+                        <div class="box-info">
+                          <strong><b class="fs-5"><?php echo $row['position']?> <input type="radio" id="treasurerA" name="treasurerA" value="<?php echo $row['candidateID']?>" checked></b></strong>
+                          <br>
+                          <b>Name: </b> <?php echo $row['name']?>
+                        </div>
+                      </div>
+                      <?php	
+                        }		
+                          $conn->close();
+                        }
+                      ?>
+                      
+                      <?php include '../dbconn.php';
+                        $sql = "SELECT * FROM clg_candidates WHERE partyList ='PARTY LIST A' AND position ='COLLEGE REP'";
+                        $result = $conn->query($sql);
+                                
+                        if ($result->num_rows > 0) {
+                          while($row = $result->fetch_array()) {
+                      ?>
+                      
+                      <div class="box mb-4">
+                        <img src="../uploads/<?php echo $row['picture']?>" alt="sc candidate" width="96" height="96">
+                        <div class="box-info">
+                          <strong><b class="fs-5"><?php echo $row['position']?> <input type="radio" id="clgrepA" name="clgrepA" value="<?php echo $row['candidateID']?>" checked></b></strong>
+                          <br>
+                          <b>Name: </b> <?php echo $row['name']?>
+                        </div>
+                      </div>
+                      <?php	
+                        }		
+                          $conn->close();
+                        }
+                      ?> 
+
+                      <div class="container p-2 text-center">
+                        <br>
+                        <input class="btn btn-success px-4" id="voteBtnA" name="voteBtnA" type="submit" value="Vote All">
+                        <a class="btn btn-danger px-4" href="vote.php">Cancel</a>
+                      </div>
+                    </form>
                     <br>
+                  </div>
+
+              </div>
+              <!--PARTY LIST A CONTENT START-->
+
+              <!--PARTY LIST B CONTENT START-->
+              <div id="plB" class="container tab-pane fade"><br>
+              
+                <h5><i>PARTY LIST B</i></h5>
+                  <form action="vote-pending-process.php" method="post"  enctype="multipart/form-data">
+                  <input type="hidden" name="vname" value="<?php echo $user->get_fullname($voterID);?>">
+                  <input type="hidden" name="vid" value="<?php echo $user->get_voterid($voterID);?>">
+                    <div class="con">
                     
-                </div>
+                      <?php include '../dbconn.php';
+                        $sql = "SELECT * FROM clg_candidates WHERE partyList ='PARTY LIST B' AND position ='PRESIDENT'";
+                        $result = $conn->query($sql);
+                                
+                        if ($result->num_rows > 0) {
+                          while($row = $result->fetch_array()) {
+                      ?>
+                      
+                      <div class="box mb-4">
+                        <img src="../uploads/<?php echo $row['picture']?>" alt="sc candidate" width="96" height="96">
+                        <div class="box-info">
+                          <strong><b class="fs-5"><?php echo $row['position']?> <input type="radio" id="presidentB" name="presidentB" value="<?php echo $row['candidateID']?>" checked></b></strong>
+                          <br>
+                          <b>Name: </b> <?php echo $row['name']?>
+                        </div>
+                      </div>
+                      <?php	
+                        }		
+                          $conn->close();
+                        }
+                      ?> 
+
+                      <?php include '../dbconn.php';
+                        $sql = "SELECT * FROM clg_candidates WHERE partyList ='PARTY LIST B' AND position ='VICE PRESIDENT'";
+                        $result = $conn->query($sql);
+                                
+                        if ($result->num_rows > 0) {
+                          while($row = $result->fetch_array()) {
+                      ?>
+                      
+                      <div class="box mb-4">
+                        <img src="../uploads/<?php echo $row['picture']?>" alt="sc candidate" width="96" height="96">
+                        <div class="box-info">
+                          <strong><b class="fs-5"><?php echo $row['position']?> <input type="radio" id="vpresidentB" name="vpresidentB" value="<?php echo $row['candidateID']?>" checked></b></strong>
+                          <br>
+                          <b>Name: </b> <?php echo $row['name']?>
+                        </div>
+                      </div>
+                      <?php	
+                        }		
+                          $conn->close();
+                        }
+                      ?> 
+
+                      <?php include '../dbconn.php';  
+                        $sql = "SELECT * FROM clg_candidates WHERE partyList ='PARTY LIST B' AND position ='SECRETARY'";
+                        $result = $conn->query($sql);
+                                
+                        if ($result->num_rows > 0) {
+                          while($row = $result->fetch_array()) {
+                      ?>
+                      
+                      <div class="box mb-4">
+                        <img src="../uploads/<?php echo $row['picture']?>" alt="sc candidate" width="96" height="96">
+                        <div class="box-info">
+                          <strong><b class="fs-5"><?php echo $row['position']?> <input type="radio" id="secretaryB" name="secretaryB" value="<?php echo $row['candidateID']?>" checked></b></strong>
+                          <br>
+                          <b>Name: </b> <?php echo $row['name']?>
+                        </div>
+                      </div>
+                      <?php	
+                        }		
+                          $conn->close();
+                        }
+                      ?>
+                      
+                      <?php include '../dbconn.php';  
+                        $sql = "SELECT * FROM clg_candidates WHERE partyList ='PARTY LIST B' AND position ='TREASURER'";
+                        $result = $conn->query($sql);
+                                
+                        if ($result->num_rows > 0) {
+                          while($row = $result->fetch_array()) {
+                      ?>
+                      
+                      <div class="box mb-4">
+                        <img src="../uploads/<?php echo $row['picture']?>" alt="sc candidate" width="96" height="96">
+                        <div class="box-info">
+                          <strong><b class="fs-5"><?php echo $row['position']?> <input type="radio" id="treasurerB" name="treasurerB" value="<?php echo $row['candidateID']?>" checked></b></strong>
+                          <br>
+                          <b>Name: </b> <?php echo $row['name']?>
+                        </div>
+                      </div>
+                      <?php	
+                        }		
+                          $conn->close();
+                        }
+                      ?> 
+
+                      <?php include '../dbconn.php';  
+                        $sql = "SELECT * FROM clg_candidates WHERE partyList ='PARTY LIST B' AND position ='COLLEGE REP'";
+                        $result = $conn->query($sql);
+                                
+                        if ($result->num_rows > 0) {
+                          while($row = $result->fetch_array()) {
+                      ?>
+                      
+                      <div class="box mb-4">
+                        <img src="../uploads/<?php echo $row['picture']?>" alt="sc candidate" width="96" height="96">
+                        <div class="box-info">
+                          <strong><b class="fs-5"><?php echo $row['position']?> <input type="radio" id="clgrepB" name="clgrepB" value="<?php echo $row['candidateID']?>" checked></b></strong>
+                          <br>
+                          <b>Name: </b> <?php echo $row['name']?>
+                        </div>
+                      </div>
+                      <?php	
+                        }		
+                          $conn->close();
+                        }
+                      ?> 
+
+                      <div class="container p-2 text-center">
+                        <br>
+                        <input class="btn btn-success px-4" id="voteBtnB" name="voteBtnB" type="submit" value="Vote All">
+                         <a class="btn btn-danger px-4" href="vote.php">Cancel</a>
+                      </div>
+                      <br>
+                      
+                    </div>
+                  </form>
               </div>
 
             </div>
@@ -365,6 +565,9 @@
 
      
     </div>
+  <?php
+    }
+  ?>
   
 </div>
 
