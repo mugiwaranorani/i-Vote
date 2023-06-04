@@ -1,4 +1,5 @@
 <?php include 'header.php'?>
+<?php include 'collegeSession.php'?>
   <title>SC Candidates</title>
   <link rel="icon" type="image/x-icon" href="ACLCLOGO/logo3.jpeg">
 </head>
@@ -10,7 +11,7 @@
     <ul class="nav nav-pills nav-justified w-100 p-2" style="font-size: 17px;">
 
       <li class="nav-item">
-        <?php include '../nav-logo.php'?>
+        <a class="nav-link" href="home.php" data-toggle="tooltip" data-placement="bottom" title="Home"><i class="fas fa-home" style="font-size:24px"></i><span class="d-none d-sm-inline"> Home</span></a>
       </li>
 
       <li class="nav-item">
@@ -30,7 +31,7 @@
         <ul class="dropdown-menu dropdown-menu-dark">
           <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#changePasswordModal"><i class='fas fa-user-lock'></i> Change Password</a></li><br>
           <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#emailVerificationModal"><i class='fas fa-user-shield'></i> Verify Email</a></li><br>
-          <li><a class="dropdown-item" href="#"><i class='fas fa-power-off'></i> Log Out</a></li>
+          <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#logoutModal"><i class='fas fa-power-off'></i> Log Out</a></li>
         </ul>
       </li>
 
@@ -64,6 +65,7 @@
 
   <?php include 'modalChangepass.php'?>
   <?php include 'modalEmailVerification.php'?>
+  <?php include 'modalLogoutConfirmation.php'?>
   
   <div class="container">
 
@@ -85,7 +87,7 @@
       }
     ?>
     <!-- Nav pills -->
-    <div class="nav nav-pills d-flex flex-column flex-xxl-row overflow-auto" role="tablist" style="height:51px;">
+    <div class="nav nav-pills d-flex flex-column flex-sm-row overflow-auto" role="tablist" style="height:51px;">
 
       <div class="nav-item">
         <a class="nav-link active" data-bs-toggle="pill" href="#viewall">View All</a>
@@ -117,35 +119,35 @@
     <div class="tab-content">
       
       <!--* VIEW ALL SECTION * * VIEW ALL SECTION * * VIEW ALL SECTION * -->
-        <?php include 'collegeCandidateContent/viewAll.php'?>
+        <?php include 'collegeCandidateContent/viewAll.php'; ?>
       <!--* VIEW ALL SECTION * * VIEW ALL SECTION * * VIEW ALL SECTION * -->
 
       <!--* PARTY LIST A SECTION * *  PARTY LIST A SECTION * *  PARTY LIST A SECTION * -->
-        <?php include 'collegeCandidateContent/partyListA.php'?>
+        <?php include 'collegeCandidateContent/partyListA.php'; ?>
        <!--* PARTY LIST A SECTION * *  PARTY LIST A SECTION * *  PARTY LIST A SECTION * -->
 
       <!--* PARTY LIST B SECTION * *  PARTY LIST A SECTION * *  PARTY LIST A SECTION * -->
-        <?php include 'collegeCandidateContent/partyListB.php'?>
+        <?php include 'collegeCandidateContent/partyListB.php'; ?>
        <!--* PARTY LIST B SECTION * *  PARTY LIST A SECTION * *  PARTY LIST A SECTION * -->
 
       <!--* PRESIDENT SECTION * * PRESIDENT SECTION * * PRESIDENT SECTION * -->
-        <?php include 'collegeCandidateContent/president.php'?>
+        <?php include 'collegeCandidateContent/president.php'; ?>
       <!--* PRESIDENT SECTION * * PRESIDENT SECTION * * PRESIDENT SECTION * -->
 
       <!--*VICE PRESIDENT SECTION * *VICE PRESIDENT SECTION * *VICE PRESIDENT SECTION * -->
-        <?php include 'collegeCandidateContent/vicePresident.php'?>
+        <?php include 'collegeCandidateContent/vicePresident.php'; ?>
       <!--*VICE PRESIDENT SECTION * *VICE PRESIDENT SECTION * *VICE PRESIDENT SECTION * -->
 
       <!--* SECRETARY SECTION * * SECRETARY SECTION * * SECRETARY SECTION * -->
-        <?php include 'collegeCandidateContent/secretary.php'?>
+        <?php include 'collegeCandidateContent/secretary.php'; ?>
       <!--* SECRETARY SECTION * * SECRETARY SECTION * * SECRETARY SECTION * -->
 
       <!--* TREASURER SECTION * * TREASURER SECTION * * TREASURER SECTION * -->
-        <?php include 'collegeCandidateContent/treasurer.php'?>
+        <?php include 'collegeCandidateContent/treasurer.php'; ?>
       <!--* TREASURER SECTION * * TREASURER SECTION * * TREASURER SECTION * -->
 
       <!--* COLLEGE REPRESENTATIVES SECTION * * COLLEGE REPRESENTATIVES SECTION * * COLLEGE REPRESENTATIVES SECTION * -->
-        <?php include 'collegeCandidateContent/collegeRepresentative.php'?>
+        <?php include 'collegeCandidateContent/collegeRepresentative.php'; ?>
       <!--* COLLEGE REPRESENTATIVES SECTION * * COLLEGE REPRESENTATIVES SECTION * * COLLEGE REPRESENTATIVES SECTION * -->
 
     </div>
